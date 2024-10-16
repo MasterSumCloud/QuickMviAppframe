@@ -1,5 +1,6 @@
 package com.demo.quickmviappframe.net
 
+import com.demo.quickmviappframe.entries.LoginResponBean
 import retrofit2.http.Field
 import retrofit2.http.FieldMap
 import retrofit2.http.FormUrlEncoded
@@ -21,7 +22,7 @@ interface APIService {
      */
     @FormUrlEncoded
     @POST("api/login")
-    suspend fun goLogin(@FieldMap phone: MutableMap<String, String?>): ApiResponse<String>
+    suspend fun goLogin(@FieldMap phone: MutableMap<String, String?>): ApiResponse<LoginResponBean>
 
 
     /**

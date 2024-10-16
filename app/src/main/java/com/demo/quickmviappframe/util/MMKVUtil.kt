@@ -6,7 +6,6 @@ import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.util.UUID
 import kotlin.properties.ReadWriteProperty
-import kotlin.random.Random
 import kotlin.reflect.KProperty
 
 object MMKVUtil {
@@ -25,6 +24,7 @@ object MMKVUtil {
          * 存储token
          */
         var token by string("")
+        var uid by string("")
     }
 
     object AppConfig : Delegates() {
@@ -36,7 +36,7 @@ object MMKVUtil {
         var loginType by int(1)
         var appChannel by string("guanwang")
         var oaid by string(UUID.randomUUID().toString())
-
+        var isAdzz by boolean(false)
     }
 }
 

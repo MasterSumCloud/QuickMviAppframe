@@ -8,7 +8,7 @@ import android.os.Build
 import android.view.View
 import com.blankj.utilcode.util.AppUtils
 import com.demo.quickmviappframe.R
-import com.demo.quickmviappframe.act.LoginAct
+import com.demo.quickmviappframe.ui.act.LoginAct
 import com.mobile.auth.gatewayauth.AuthRegisterViewConfig
 import com.mobile.auth.gatewayauth.AuthRegisterXmlConfig
 import com.mobile.auth.gatewayauth.AuthUIConfig

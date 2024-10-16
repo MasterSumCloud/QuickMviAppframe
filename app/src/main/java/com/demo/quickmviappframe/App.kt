@@ -6,7 +6,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.text.TextUtils
 import com.blankj.utilcode.util.Utils
-import com.demo.quickmviappframe.act.LoginAct
+import com.demo.quickmviappframe.ui.act.LoginAct
 import com.demo.quickmviappframe.base.BaseMessageEvent
 import com.demo.quickmviappframe.core.AppConfig
 import com.demo.quickmviappframe.core.AppManager
@@ -27,9 +27,10 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory
 import com.tencent.mmkv.MMKV
 import com.umeng.analytics.MobclickAgent
 import com.umeng.commonsdk.UMConfigure
+import dagger.hilt.android.HiltAndroidApp
 import org.greenrobot.eventbus.EventBus
 
-
+@HiltAndroidApp
 class App : Application() {
 
     companion object {
@@ -52,6 +53,7 @@ class App : Application() {
         Utils.init(this)
         isLogin = MMKVUtil.User.isLogin
         isVip = MMKVUtil.User.isVip
+        token = MMKVUtil.User.token
         initSdks()
     }
 
