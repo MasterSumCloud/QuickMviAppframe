@@ -35,11 +35,13 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import com.blankj.utilcode.util.ActivityUtils.startActivity
 import com.blankj.utilcode.util.ClipboardUtils
 import com.demo.quickmviappframe.App
 import com.demo.quickmviappframe.R
 import com.demo.quickmviappframe.entries.MyActFunListItemBean
 import com.demo.quickmviappframe.ext.toastShort
+import com.demo.quickmviappframe.ui.act.LoginAct
 import com.demo.quickmviappframe.ui.router.RouteConfig
 import com.demo.quickmviappframe.ui.vm.MyViewModel
 import com.demo.quickmviappframe.ui.widget.CustomSwitch
@@ -308,8 +310,8 @@ private fun itemClick(item: MyActFunListItemBean?, navController: NavHostControl
         }
 
         "测试" -> {
-            navController?.navigate(RouteConfig.LOGIN)
-//                startActivity(TestAct::class.java)
+//            navController?.navigate(RouteConfig.LOGIN)
+            startActivity(LoginAct::class.java)
 //                startActivity(KeyboardGuideAct::class.java)
 //                startActivity(KeyboardChatDmAct::class.java)
 //                startActivity(KeyboardSettingAct::class.java)
