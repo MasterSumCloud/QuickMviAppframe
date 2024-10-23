@@ -11,8 +11,8 @@ object Toggles {
     const val isPreRelease = false
 
     //是否显示全局LOG日志
-    const val isNotShowLog = false
+    const val isNotShowLog = true
 
     //是否开启测试
-    const val isShowTesting = false
+    const val isShowTesting = true
 }

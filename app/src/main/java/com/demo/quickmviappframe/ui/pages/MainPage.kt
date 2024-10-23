@@ -16,10 +16,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.navigation.NavHostController
 import kotlinx.coroutines.launch
 
 @Composable
-fun MainPage() {
+fun MainPage(navController: NavHostController) {
     val scope = rememberCoroutineScope()
     val titles = listOf(
         TabItem("首页", Icons.Filled.Home),
@@ -34,9 +35,9 @@ fun MainPage() {
     Column {
         HorizontalPager(state = pagerState, modifier = Modifier.weight(1f)) { page ->
             when (page) {
-                0 -> HomePage()
-                1 -> VipPage()
-                2 -> MyPage()
+                0 -> HomePage(navController)
+                1 -> VipPage(navController)
+                2 -> MyPage(navController)
             }
         }
         TabRow(selectedTabIndex = pagerState.currentPage) {

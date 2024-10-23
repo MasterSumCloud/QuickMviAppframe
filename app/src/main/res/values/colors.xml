@@ -12,4 +12,14 @@
     <color name="trans">#00000000</color>
     <color name="balck_342E44">#342E44</color>
     <color name="blue_40c6f2">#40c6f2</color>
+    <color name="black_010106">#010106</color>
+    <color name="purple_F0E0FF">#F0E0FF</color>
+    <color name="purple_6E52FB">#6E52FB</color>
+    <color name="purple_C0B6FF">#C0B6FF</color>
+    <color name="black_2C2C34">#2C2C34</color>
+    <color name="gray_98A0B0">#98A0B0</color>
+    <color name="blue_51A0FF">#51A0FF</color>
+    <color name="gray_b4b4b4">#b4b4b4</color>
+    <color name="gray_F8">#F8F8F8</color>
+    <color name="gray_9D9EA2">#9D9EA2</color>
 </resources>

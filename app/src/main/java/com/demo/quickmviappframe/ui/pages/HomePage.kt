@@ -6,9 +6,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
 
 @Composable
-fun HomePage() {
+fun HomePage(navController: NavHostController) {
     Box(modifier = Modifier.fillMaxSize()) {
         Text("首页", modifier = Modifier.align(Alignment.Center))
     }

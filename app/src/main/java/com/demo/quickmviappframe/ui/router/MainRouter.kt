@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.demo.quickmviappframe.ui.pages.LoginPage
 import com.demo.quickmviappframe.ui.pages.MainPage
 import com.demo.quickmviappframe.ui.pages.SplashPage
 
@@ -15,7 +16,11 @@ fun MainRouter(navController: NavHostController) {
         }
 
         composable(RouteConfig.MAIN_APGE) {
-            MainPage()
+            MainPage(navController)
+        }
+
+        composable(RouteConfig.LOGIN) {
+            LoginPage(navController)
         }
     }
 }

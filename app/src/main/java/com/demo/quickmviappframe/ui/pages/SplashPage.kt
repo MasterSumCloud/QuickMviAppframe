@@ -15,7 +15,7 @@ import kotlinx.coroutines.delay
 fun SplashPage(navController: NavHostController) {
 
     LaunchedEffect(key1 = Unit) {
-        delay(5000)
+        delay(1000)
         navController.navigate(RouteConfig.MAIN_APGE)
     }
 

@@ -65,6 +65,8 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+//    androidTestImplementation("com.google.dagger:hilt-android-testing:2.52")
+//    kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.52")
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
@@ -115,8 +117,13 @@ dependencies {
     implementation("com.tencent.bugly:crashreport_upgrade:latest.release")
     implementation("com.tencent.bugly:nativecrashreport:latest.release")
     //hilt
-    implementation("com.google.dagger:hilt-android:2.44")
-    kapt("com.google.dagger:hilt-android-compiler:2.44")
+    implementation("com.google.dagger:hilt-android:2.52")
+    kapt("com.google.dagger:hilt-android-compiler:2.52")
+    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
     // navigation
     implementation(libs.androidx.navigation.compose)
+    //AsyncImage
+    implementation("io.coil-kt:coil-compose:2.6.0")
+    //autosize
+    implementation("com.github.JessYanCoding:AndroidAutoSize:v1.2.1")
 }

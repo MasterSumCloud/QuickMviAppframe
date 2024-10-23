@@ -14,6 +14,7 @@ import com.demo.quickmviappframe.core.Constent
 import com.demo.quickmviappframe.core.LoginMessageEvent
 import com.demo.quickmviappframe.core.Toggles
 import com.demo.quickmviappframe.dialog.LoadingDialog
+import com.demo.quickmviappframe.entries.LoginResponBean
 import com.demo.quickmviappframe.ext.toastShort
 import com.demo.quickmviappframe.util.GeneralUtil
 import com.demo.quickmviappframe.util.LogU
@@ -39,6 +40,7 @@ class App : Application() {
         var token: String? = null
         var appChannel: String = "test"
         var isLogin: Boolean = false
+        var myActInfo: LoginResponBean? = null
     }
 
     private var onstartOnce: Int = 1
