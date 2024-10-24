@@ -1,13 +1,15 @@
 package com.demo.quickmviappframe.ui.pages
 
+import android.content.Context
+import android.text.TextUtils
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,6 +19,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.RadioButton
@@ -24,40 +27,58 @@ import androidx.compose.material3.RadioButtonColors
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableIntState
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.blankj.utilcode.util.RegexUtils
+import com.blankj.utilcode.util.StringUtils.getString
 import com.demo.quickmviappframe.R
+import com.demo.quickmviappframe.core.AppConfig
+import com.demo.quickmviappframe.dialog.LoginYSZCDialog
 import com.demo.quickmviappframe.ext.toastShort
+import com.demo.quickmviappframe.ui.act.LoginAct
+import com.demo.quickmviappframe.ui.vm.LoginActVM
 import com.demo.quickmviappframe.ui.widget.VerticalSpace
 import com.demo.quickmviappframe.ui.widget.textfield.BackgroundComposeWithTextField
 import com.demo.quickmviappframe.ui.widget.textfield.GoodTextField
 import com.demo.quickmviappframe.ui.widget.textfield.HintComposeWithTextField
+import com.tencent.mm.opensdk.modelmsg.SendAuth
+import com.tencent.mm.opensdk.openapi.WXAPIFactory
+import kotlinx.coroutines.delay
 
 @Composable
-fun LoginPage() {
+fun LoginPage(vm: LoginActVM) {
 
     val phoneNumber = remember { mutableStateOf("") }
     val codeNumber = remember { mutableStateOf("") }
     val agreementPolicy = remember { mutableStateOf(false) }
     val loginUiType = remember { mutableIntStateOf(1) }//1 短信登录  2微信登录
+    val rm60s = remember { mutableIntStateOf(60) }
+    val rmState = remember { mutableStateOf(false) }
     //动画 准则的
     val topPd1 = animateDpAsState(if (loginUiType.intValue == 1) 28.dp else 87.dp, label = "ruleDp")
     val topPd2 = animateDpAsState(if (loginUiType.intValue == 1) 87.dp else 28.dp, label = "ruleDp")
+    val showYszcLog = remember { mutableStateOf(false) }
 
-
-//    val ctx = LocalContext.current as LoginAct
+    val ctx = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -67,7 +88,8 @@ fun LoginPage() {
             .padding(top = 20.dp)
             .size(55.dp, 55.dp)
             .clickable {
-//                ctx.finish()
+                val loctx = ctx as LoginAct
+                loctx.finish()
             }
         ) {
             Image(
@@ -98,6 +120,7 @@ fun LoginPage() {
                     value = phoneNumber.value,
                     onValueChange = {
                         phoneNumber.value = it
+                        vm.state.phone = it
                     },
                     hint = HintComposeWithTextField.createTextHintCompose("请输入手机号"),
                     modifier = Modifier
@@ -122,6 +145,7 @@ fun LoginPage() {
                         value = codeNumber.value,
                         onValueChange = {
                             codeNumber.value = it
+                            vm.state.code = it
                         },
                         hint = HintComposeWithTextField.createTextHintCompose("短信验证码"),
                         modifier = Modifier
@@ -129,6 +153,7 @@ fun LoginPage() {
                             .height(40.dp),
                         fontSize = 14.sp,
                         horizontalPadding = 28.dp,
+                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                         background = BackgroundComposeWithTextField.createBackgroundCompose(RoundedCornerShape(21.dp), Color.White),
                         cursorBrush = SolidColor(colorResource(R.color.blue_51A0FF)),
                         keyboardActions = KeyboardActions(onDone = {
@@ -138,14 +163,8 @@ fun LoginPage() {
                         }),
                     )
 
-                    Box(
-                        modifier = Modifier
-                            .padding(end = 28.dp)
-                            .background(color = colorResource(R.color.blue_51A0FF), shape = RoundedCornerShape(13.dp))
-                            .size(78.dp, 26.dp)
-                            .align(Alignment.CenterVertically)
-                    ) {
-                        Text("获取验证码", modifier = Modifier.align(Alignment.Center), color = Color.White, fontSize = 12.sp)
+                    CountdownTimerButton(modifier = Modifier.align(Alignment.CenterVertically), rm60s, rmState) {
+                        vm.getPhoneCode()
                     }
                 }
                 HorizontalDivider(color = colorResource(R.color.gray_F8), thickness = 1.dp, modifier = Modifier.padding(horizontal = 28.dp))
@@ -177,6 +196,7 @@ fun LoginPage() {
             RadioButton(
                 selected = agreementPolicy.value, onClick = {
                     agreementPolicy.value = !agreementPolicy.value
+                    vm.state.privateChecked = agreementPolicy.value
                 }, colors = RadioButtonColors(
                     selectedColor = colorResource(id = R.color.blue_51A0FF),
                     unselectedColor = colorResource(id = R.color.gray_9D9EA2),
@@ -185,7 +205,7 @@ fun LoginPage() {
                 ), modifier = Modifier.size(15.dp)
             )
 
-            Text(text = "已阅读并同意", color = colorResource(id = R.color.gray_9D9EA2), fontSize = 12.sp, modifier = Modifier.padding(start = 5.dp))
+            Text(text = "已阅读并同意", color = colorResource(id = R.color.gray_9D9EA2), fontSize = 12.sp, modifier = Modifier.padding(start = 10.dp))
             Text(text = "《用户协议》", modifier = Modifier.clickable {
                 "去用户协议".toastShort()
             }, color = colorResource(id = R.color.blue_51A0FF), fontSize = 12.sp)
@@ -197,7 +217,7 @@ fun LoginPage() {
 
         TextButton(
             onClick = {
-                "去登录".toastShort()
+                juadgeLoginInfo(loginUiType.intValue, vm, ctx,showYszcLog)
             }, colors = ButtonDefaults.textButtonColors(
                 containerColor = colorResource(R.color.blue_51A0FF),
                 contentColor = Color.White
@@ -238,6 +258,91 @@ fun LoginPage() {
                 Text("微信一键登录", modifier = Modifier.padding(top = 5.dp), color = colorResource(R.color.gray_98A0B0), fontSize = 12.sp)
             }
         }
+
+        if (showYszcLog.value) {
+            LoginYSZCDialog({
+                showYszcLog.value = false
+            }, {
+                showYszcLog.value = false
+                agreementPolicy.value = true
+            })
+        }
+    }
+}
+
+private fun juadgeLoginInfo(type: Int, selfVM: LoginActVM, ctx: Context, showYszcLog: MutableState<Boolean>) {
+    if (type == 2) {
+        if (!selfVM.state.privateChecked) {
+            showYszcLog.value = true
+        } else {
+            val wxapi = WXAPIFactory.createWXAPI(ctx, AppConfig.WECHAT_APPID)
+            if (wxapi.isWXAppInstalled) {
+                val req = SendAuth.Req()
+                req.scope = "snsapi_userinfo"
+                req.state = "wechat_sdk_demo_test"
+                wxapi.sendReq(req)
+            } else {
+                getString(R.string.wechat_not_install).toastShort()
+            }
+        }
+    } else {
+        val phone = selfVM.state.phone
+        val code = selfVM.state.code
+        if (TextUtils.isEmpty(phone)) {
+            "请输入手机号".toastShort()
+        } else if (TextUtils.isEmpty(code)) {
+            "请输入验证码".toastShort()
+        } else if (!RegexUtils.isMobileSimple(phone.trim())) {
+            "请输入正确的手机号".toastShort()
+        } else if (code.trim().length != 6) {
+            "请输入正确的验证码".toastShort()
+        } else if (!selfVM.state.privateChecked) {
+            showYszcLog.value = true
+        } else {
+            selfVM.goLogin()
+        }
+    }
+}
+
+
+@Composable
+fun CountdownTimerButton(
+    modifier: Modifier,
+    rm60s: MutableIntState,
+    stateTimer: MutableState<Boolean>,
+    getCode: () -> Unit = {}
+) {
+    var currentTime by remember { rm60s }
+    var isTimerRunning by remember { stateTimer }
+
+    LaunchedEffect(key1 = isTimerRunning) {
+        while (isTimerRunning && currentTime > 0) {
+            delay(1000)
+            currentTime--
+        }
+        if (currentTime <= 0) {
+            isTimerRunning = false
+            currentTime = 60
+        }
+    }
+
+    TextButton(
+        modifier = modifier
+            .padding(end = 28.dp)
+            .background(color = colorResource(if (isTimerRunning) R.color.gray_9D9EA2 else R.color.blue_51A0FF), shape = RoundedCornerShape(13.dp))
+            .size(78.dp, 26.dp),
+        contentPadding = PaddingValues(0.dp),
+        onClick = {
+            if (!isTimerRunning) {
+                getCode()
+                isTimerRunning = true
+            }
+        },
+        enabled = !isTimerRunning // 仅在倒计时未运行且时间为初始值时启用按钮
+    ) {
+        Text(
+            if (isTimerRunning) "剩余${currentTime}秒" else "获取验证码", color = Color.White, fontSize = 12.sp
+        )
     }
 }
 
@@ -245,5 +350,5 @@ fun LoginPage() {
 @Preview
 @Composable
 private fun prev() {
-    LoginPage()
+    LoginPage(LoginActVM())
 }

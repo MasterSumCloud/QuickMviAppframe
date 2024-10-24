@@ -100,9 +100,9 @@ dependencies {
     implementation("com.alipay.sdk:alipaysdk-android:+@aar")
     implementation("com.tencent.mm.opensdk:wechat-sdk-android:+")
     //阿里一键登录
-    implementation(files("libs/auth_number_product-2.13.2.1-log-online-standard-cuum-release.aar"))
-    implementation(files("libs/main-2.2.1-release"))
-    implementation(files("libs/logger-2.2.1-release"))
+    implementation(files("libs/auth_number_product-2.14.2-log-online-standard-cuum-release.aar"))
+    implementation(files("libs/main-2.2.3-release"))
+    implementation(files("libs/logger-2.2.2-release"))
     // 友盟统计SDK
     implementation("com.umeng.umsdk:common:9.4.7")// 必选
     implementation("com.umeng.umsdk:asms:1.4.1")// 必选

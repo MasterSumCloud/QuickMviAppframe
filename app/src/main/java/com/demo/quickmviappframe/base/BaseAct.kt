@@ -19,6 +19,9 @@ abstract class BaseAct<VM : BaseViewModel> : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initBaseConfig()
+        //初始化配置
+        initConfig()
+        initListener()
 
         setContent {
             Box(modifier = Modifier.fillMaxSize()) {
@@ -33,6 +36,9 @@ abstract class BaseAct<VM : BaseViewModel> : ComponentActivity() {
         registerUiChange()
         mLoadingDialog = LoadingDialog(this)
     }
+
+    abstract fun initConfig()
+    abstract fun initListener()
 
     @Composable
     abstract fun initComposeLayout()
@@ -64,4 +70,6 @@ abstract class BaseAct<VM : BaseViewModel> : ComponentActivity() {
     fun disLoading() {
         mLoadingDialog.dismiss()
     }
+
+    val selfVM: VM get() = viewModel
 }

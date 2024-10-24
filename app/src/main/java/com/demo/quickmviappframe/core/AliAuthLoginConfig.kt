@@ -98,7 +98,7 @@ class AliAuthLoginConfig(private val mContext: Activity, authHelper: PhoneNumber
                 .setLogBtnMarginLeftAndRight(20)
                 .setLogBtnHeight(44)
                 .setLogBtnTextSizeDp(16)
-                .setLogBtnBackgroundPath("shape_bg_blue_c22")
+                .setLogBtnBackgroundPath("shape_bg_login_c22")
                 .setLogBtnOffsetY(284)
                 .setSloganText("中国" + sCC + "提供认证服务")
                 .setSloganOffsetY(222)
