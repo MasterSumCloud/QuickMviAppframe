@@ -29,6 +29,8 @@
         </activity>
 
         <activity android:name=".ui.act.LoginAct" />
+        <activity android:name=".ui.act.SettingAct" />
+        <activity android:name=".ui.act.AboutAct" />
     </application>
 
 </manifest>

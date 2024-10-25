@@ -37,6 +37,7 @@ object MMKVUtil {
         var appChannel by string("guanwang")
         var oaid by string(UUID.randomUUID().toString())
         var isAdzz by boolean(false)
+        var personalSuggest by boolean(false)
     }
 }
 

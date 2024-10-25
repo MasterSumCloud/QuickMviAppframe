@@ -7,7 +7,6 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -54,7 +53,6 @@ import com.demo.quickmviappframe.R
 import com.demo.quickmviappframe.core.AppConfig
 import com.demo.quickmviappframe.dialog.LoginYSZCDialog
 import com.demo.quickmviappframe.ext.toastShort
-import com.demo.quickmviappframe.ui.act.LoginAct
 import com.demo.quickmviappframe.ui.vm.LoginActVM
 import com.demo.quickmviappframe.ui.widget.VerticalSpace
 import com.demo.quickmviappframe.ui.widget.textfield.BackgroundComposeWithTextField
@@ -84,7 +82,7 @@ fun LoginPage(vm: LoginActVM) {
             .fillMaxSize()
             .background(color = Color.White)
     ) {
-        Box(modifier = Modifier
+        /*Box(modifier = Modifier
             .padding(top = 20.dp)
             .size(55.dp, 55.dp)
             .clickable {
@@ -97,7 +95,7 @@ fun LoginPage(vm: LoginActVM) {
                     .align(Alignment.Center)
                     .size(16.dp)
             )
-        }
+        }*/
 
         AnimatedVisibility(visible = loginUiType.intValue == 1) {
             Column {
@@ -177,7 +175,7 @@ fun LoginPage(vm: LoginActVM) {
                     .fillMaxWidth()
                     .padding(top = 48.dp), horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Image(painter = painterResource(R.mipmap.header_ofmy_default), contentDescription = "iconAppIcon", modifier = Modifier.size(76.dp))
+                Image(painter = painterResource(R.mipmap.ic_launcher), contentDescription = "iconAppIcon", modifier = Modifier.size(76.dp))
                 Text(
                     text = stringResource(R.string.app_name),
                     color = colorResource(R.color.black_2C2C34),

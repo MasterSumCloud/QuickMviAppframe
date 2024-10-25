@@ -22,9 +22,9 @@ class MyViewModel @Inject constructor() : BaseViewModel() {
         add(MyActFunListItemBean(R.mipmap.myicon_service, "联系客服", true, false))
         add(MyActFunListItemBean(R.mipmap.myicon_yhxy, "用户协议", true, false))
         add(MyActFunListItemBean(R.mipmap.myicon_yszc, "隐私协议", true, false))
-        add(MyActFunListItemBean(R.mipmap.myicon_notify, "个性化推荐", false, true))//SPUtil.getMessagePushState()
-        add(MyActFunListItemBean(R.mipmap.myicon_setting, "设置", true, false))
+//        add(MyActFunListItemBean(R.mipmap.myicon_notify, "个性化推荐", false, true))//SPUtil.getMessagePushState()
         add(MyActFunListItemBean(R.mipmap.myicon_jubao, "举报", true, false))
+        add(MyActFunListItemBean(R.mipmap.myicon_setting, "设置", true, false))
         if (Toggles.isShowTesting) {
             add(MyActFunListItemBean(R.mipmap.myicon_jubao, "测试", true, false))
         }

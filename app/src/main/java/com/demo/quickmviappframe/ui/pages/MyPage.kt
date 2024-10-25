@@ -42,7 +42,7 @@ import com.demo.quickmviappframe.R
 import com.demo.quickmviappframe.entries.MyActFunListItemBean
 import com.demo.quickmviappframe.ext.toastShort
 import com.demo.quickmviappframe.ui.act.LoginAct
-import com.demo.quickmviappframe.ui.router.RouteConfig
+import com.demo.quickmviappframe.ui.act.SettingAct
 import com.demo.quickmviappframe.ui.vm.MyViewModel
 import com.demo.quickmviappframe.ui.widget.CustomSwitch
 import com.demo.quickmviappframe.ui.widget.HorizontalSpace
@@ -302,7 +302,7 @@ private fun itemClick(item: MyActFunListItemBean?, navController: NavHostControl
         }
 
         "设置" -> {
-//            startActivity(SettingAct::class.java)
+            startActivity(SettingAct::class.java)
         }
 
         "举报" -> {
