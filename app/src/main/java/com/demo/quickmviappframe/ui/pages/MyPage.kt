@@ -1,5 +1,6 @@
 package com.demo.quickmviappframe.ui.pages
 
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -35,14 +36,18 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.ActivityUtils.startActivity
 import com.blankj.utilcode.util.ClipboardUtils
 import com.demo.quickmviappframe.App
 import com.demo.quickmviappframe.R
+import com.demo.quickmviappframe.core.Constent
+import com.demo.quickmviappframe.core.UCS
 import com.demo.quickmviappframe.entries.MyActFunListItemBean
 import com.demo.quickmviappframe.ext.toastShort
 import com.demo.quickmviappframe.ui.act.LoginAct
 import com.demo.quickmviappframe.ui.act.SettingAct
+import com.demo.quickmviappframe.ui.act.WebAct
 import com.demo.quickmviappframe.ui.vm.MyViewModel
 import com.demo.quickmviappframe.ui.widget.CustomSwitch
 import com.demo.quickmviappframe.ui.widget.HorizontalSpace
@@ -288,17 +293,17 @@ private fun itemClick(item: MyActFunListItemBean?, navController: NavHostControl
         }
 
         "用户协议" -> {
-//            val intent = Intent(baseActivity, WebUrlAct::class.java)
-//            intent.putExtra(Constent.WEB_URL, UCS.YHXY_URL)
-//            intent.putExtra(Constent.TITLE_TEXT, "用户协议")
-//            startActivity(intent)
+            val intent = Intent(ActivityUtils.getTopActivity(), WebAct::class.java)
+            intent.putExtra(Constent.WEB_URL, UCS.YHXY_URL)
+            intent.putExtra(Constent.TITLE_TEXT, "用户协议")
+            startActivity(intent)
         }
 
         "隐私协议" -> {
-//            val intent = Intent(baseActivity, WebUrlAct::class.java)
-//            intent.putExtra(Constent.WEB_URL, UCS.YSZC_URL)
-//            intent.putExtra(Constent.TITLE_TEXT, "隐私协议")
-//            startActivity(intent)
+            val intent = Intent(ActivityUtils.getTopActivity(), WebAct::class.java)
+            intent.putExtra(Constent.WEB_URL, UCS.YSZC_URL)
+            intent.putExtra(Constent.TITLE_TEXT, "隐私协议")
+            startActivity(intent)
         }
 
         "设置" -> {

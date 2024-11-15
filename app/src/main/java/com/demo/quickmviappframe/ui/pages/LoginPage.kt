@@ -161,7 +161,7 @@ fun LoginPage(vm: LoginActVM) {
                         }),
                     )
 
-                    CountdownTimerButton(modifier = Modifier.align(Alignment.CenterVertically), rm60s, rmState) {
+                    CountdownTimerButton(modifier = Modifier.align(Alignment.CenterVertically), rm60s, rmState, vm) {
                         vm.getPhoneCode()
                     }
                 }
@@ -215,7 +215,7 @@ fun LoginPage(vm: LoginActVM) {
 
         TextButton(
             onClick = {
-                juadgeLoginInfo(loginUiType.intValue, vm, ctx,showYszcLog)
+                juadgeLoginInfo(loginUiType.intValue, vm, ctx, showYszcLog)
             }, colors = ButtonDefaults.textButtonColors(
                 containerColor = colorResource(R.color.blue_51A0FF),
                 contentColor = Color.White
@@ -308,6 +308,7 @@ fun CountdownTimerButton(
     modifier: Modifier,
     rm60s: MutableIntState,
     stateTimer: MutableState<Boolean>,
+    vm: LoginActVM,
     getCode: () -> Unit = {}
 ) {
     var currentTime by remember { rm60s }
@@ -331,6 +332,15 @@ fun CountdownTimerButton(
             .size(78.dp, 26.dp),
         contentPadding = PaddingValues(0.dp),
         onClick = {
+            val phone = vm.state.phone
+            if (TextUtils.isEmpty(phone)) {
+                "请输入手机号".toastShort()
+                return@TextButton
+            } else if (!RegexUtils.isMobileSimple(phone.trim())) {
+                "请输入正确的手机号".toastShort()
+                return@TextButton
+            }
+
             if (!isTimerRunning) {
                 getCode()
                 isTimerRunning = true

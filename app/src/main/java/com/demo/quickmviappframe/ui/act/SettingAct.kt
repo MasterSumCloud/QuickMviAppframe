@@ -9,7 +9,6 @@ import com.demo.quickmviappframe.ui.vm.SettingViewModel
 class SettingAct : BaseAct<SettingViewModel>() {
     override fun initConfig() {
         setTitleBarInfo(TitleBarSet(title = "设置"))
-        setStateBarLightMode(true)
     }
 
     override fun initListener() {

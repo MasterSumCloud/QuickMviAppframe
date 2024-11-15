@@ -43,6 +43,7 @@ abstract class BaseAct<VM : BaseViewModel> : ComponentActivity() {
 
 
     private fun initBaseConfig() {
+        setStateBarLightMode(true)
         createViewModel()
         registerUiChange()
         mLoadingDialog = LoadingDialog(this)
@@ -59,7 +60,7 @@ abstract class BaseAct<VM : BaseViewModel> : ComponentActivity() {
         this.titleInfo = titleInfo
     }
 
-    fun setStateBarLightMode(light: Boolean, color:Int = Color.WHITE) {
+    fun setStateBarLightMode(light: Boolean, color: Int = Color.WHITE) {
         BarUtils.setStatusBarColor(this, color)
         BarUtils.setStatusBarLightMode(this, light)
     }

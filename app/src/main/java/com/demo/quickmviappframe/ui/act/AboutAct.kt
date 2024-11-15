@@ -9,7 +9,6 @@ import com.demo.quickmviappframe.ui.pages.AboutPage
 class AboutAct : BaseAct<BaseViewModel>() {
     override fun initConfig() {
         setTitleBarInfo(TitleBarSet(title = "关于我们"))
-        setStateBarLightMode(true)
     }
 
     override fun initListener() {
