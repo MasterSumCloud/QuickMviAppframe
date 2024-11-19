@@ -15,6 +15,10 @@ class LoginAct : BaseAct<LoginActVM>() {
 
     }
 
+    override fun initData() {
+
+    }
+
 
     @Composable
     override fun initComposeLayout() {

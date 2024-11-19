@@ -1,21 +1,19 @@
 package com.demo.quickmviappframe.ui.vm
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.lifecycle.viewModelScope
 import com.demo.quickmviappframe.App
 import com.demo.quickmviappframe.base.BaseViewModel
+import com.demo.quickmviappframe.base.NoUiEffect
 import com.demo.quickmviappframe.ext.request
 import com.demo.quickmviappframe.ext.toastShort
 import com.demo.quickmviappframe.net.apiService
 import com.demo.quickmviappframe.util.Tos
+import kotlinx.coroutines.launch
 
-class LoginActVM : BaseViewModel() {
-    var state by mutableStateOf(LoginCode())
-        private set
+class LoginActVM : BaseViewModel<LoginCodeState, LoginIntent, NoUiEffect>() {
 
-    fun getPhoneCode() {
-        request({ apiService.getPhoneCode(state.phone) },
+    private fun getPhoneCode() {
+        request({ apiService.getPhoneCode(uiState.value.phone) },
             {
                 "短信已发送".toastShort()
             },
@@ -23,10 +21,23 @@ class LoginActVM : BaseViewModel() {
     }
 
 
-    fun goLogin() {
+    fun handleIntent(intent: LoginIntent) {
+        viewModelScope.launch {
+            when (intent) {
+                is LoginIntent.GetPhoneCode -> {
+                    getPhoneCode()
+                }
+
+                LoginIntent.GoLogin -> goLogin()
+                LoginIntent.StartAuthLogin -> startAuthLogin()
+            }
+        }
+    }
+
+    private fun goLogin() {
         val params = mutableMapOf<String, String?>()
-        params.put("phone", state.phone)
-        params.put("code", state.code)
+        params.put("phone", uiState.value.phone)
+        params.put("code", uiState.value.code)
         request({ apiService.goLogin(params) }, {
 //            GeneralUtil.loginSuccess(it, "phone_auth")
 //            loginState.set(App.isLogin)
@@ -35,15 +46,25 @@ class LoginActVM : BaseViewModel() {
     }
 
 
-    fun startAuthLogin() {
-        loadingChange.showDialog.value = "show"
+    private fun startAuthLogin() {
+//        loadingChange.showDialog.value = "show"
         App.app.goLogin()
+    }
+
+    override fun initialState(): LoginCodeState {
+        return LoginCodeState()
     }
 }
 
-data class LoginCode(
+data class LoginCodeState(
     var phone: String = "",
     var code: String = "",
     var privateChecked: Boolean = false,
     var yszcDialogShow: Boolean = false
 )
+
+sealed class LoginIntent {
+    data object GetPhoneCode : LoginIntent()
+    data object GoLogin : LoginIntent()
+    data object StartAuthLogin : LoginIntent()
+}

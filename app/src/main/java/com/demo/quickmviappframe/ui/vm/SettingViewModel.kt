@@ -2,10 +2,10 @@ package com.demo.quickmviappframe.ui.vm
 
 import androidx.compose.runtime.mutableStateListOf
 import com.blankj.utilcode.util.CacheDiskStaticUtils
-import com.demo.quickmviappframe.base.BaseViewModel
+import com.demo.quickmviappframe.base.NoViewModel
 import com.demo.quickmviappframe.util.GeneralUtil
 
-class SettingViewModel : BaseViewModel() {
+class SettingViewModel : NoViewModel() {
     val settingList = mutableStateListOf<SettingItem>().apply {
         add(SettingItem("清理缓存", GeneralUtil.getFileSize(CacheDiskStaticUtils.getCacheSize()), true, false))
         add(SettingItem("检查更新", "", true, false))

@@ -4,11 +4,11 @@ import android.webkit.WebView
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.viewinterop.AndroidView
 import com.demo.quickmviappframe.base.BaseAct
-import com.demo.quickmviappframe.base.BaseViewModel
+import com.demo.quickmviappframe.base.NoViewModel
 import com.demo.quickmviappframe.core.Constent
 import com.demo.quickmviappframe.entries.TitleBarSet
 
-class WebAct : BaseAct<BaseViewModel>() {
+class WebAct : BaseAct<NoViewModel>() {
 
     private var url: String = ""
 
@@ -19,6 +19,10 @@ class WebAct : BaseAct<BaseViewModel>() {
     }
 
     override fun initListener() {
+
+    }
+
+    override fun initData() {
 
     }
 

@@ -54,6 +54,7 @@ import com.demo.quickmviappframe.core.AppConfig
 import com.demo.quickmviappframe.dialog.LoginYSZCDialog
 import com.demo.quickmviappframe.ext.toastShort
 import com.demo.quickmviappframe.ui.vm.LoginActVM
+import com.demo.quickmviappframe.ui.vm.LoginIntent
 import com.demo.quickmviappframe.ui.widget.VerticalSpace
 import com.demo.quickmviappframe.ui.widget.textfield.BackgroundComposeWithTextField
 import com.demo.quickmviappframe.ui.widget.textfield.GoodTextField
@@ -118,7 +119,7 @@ fun LoginPage(vm: LoginActVM) {
                     value = phoneNumber.value,
                     onValueChange = {
                         phoneNumber.value = it
-                        vm.state.phone = it
+                        vm.uiState.value.phone = it
                     },
                     hint = HintComposeWithTextField.createTextHintCompose("请输入手机号"),
                     modifier = Modifier
@@ -143,7 +144,7 @@ fun LoginPage(vm: LoginActVM) {
                         value = codeNumber.value,
                         onValueChange = {
                             codeNumber.value = it
-                            vm.state.code = it
+                            vm.uiState.value.code = it
                         },
                         hint = HintComposeWithTextField.createTextHintCompose("短信验证码"),
                         modifier = Modifier
@@ -162,7 +163,7 @@ fun LoginPage(vm: LoginActVM) {
                     )
 
                     CountdownTimerButton(modifier = Modifier.align(Alignment.CenterVertically), rm60s, rmState, vm) {
-                        vm.getPhoneCode()
+                        vm.sendIntent(LoginIntent.GetPhoneCode)
                     }
                 }
                 HorizontalDivider(color = colorResource(R.color.gray_F8), thickness = 1.dp, modifier = Modifier.padding(horizontal = 28.dp))
@@ -194,7 +195,7 @@ fun LoginPage(vm: LoginActVM) {
             RadioButton(
                 selected = agreementPolicy.value, onClick = {
                     agreementPolicy.value = !agreementPolicy.value
-                    vm.state.privateChecked = agreementPolicy.value
+                    vm.uiState.value.privateChecked = agreementPolicy.value
                 }, colors = RadioButtonColors(
                     selectedColor = colorResource(id = R.color.blue_51A0FF),
                     unselectedColor = colorResource(id = R.color.gray_9D9EA2),
@@ -270,7 +271,7 @@ fun LoginPage(vm: LoginActVM) {
 
 private fun juadgeLoginInfo(type: Int, selfVM: LoginActVM, ctx: Context, showYszcLog: MutableState<Boolean>) {
     if (type == 2) {
-        if (!selfVM.state.privateChecked) {
+        if (!selfVM.uiState.value.privateChecked) {
             showYszcLog.value = true
         } else {
             val wxapi = WXAPIFactory.createWXAPI(ctx, AppConfig.WECHAT_APPID)
@@ -284,8 +285,8 @@ private fun juadgeLoginInfo(type: Int, selfVM: LoginActVM, ctx: Context, showYsz
             }
         }
     } else {
-        val phone = selfVM.state.phone
-        val code = selfVM.state.code
+        val phone = selfVM.uiState.value.phone
+        val code = selfVM.uiState.value.code
         if (TextUtils.isEmpty(phone)) {
             "请输入手机号".toastShort()
         } else if (TextUtils.isEmpty(code)) {
@@ -294,10 +295,10 @@ private fun juadgeLoginInfo(type: Int, selfVM: LoginActVM, ctx: Context, showYsz
             "请输入正确的手机号".toastShort()
         } else if (code.trim().length != 6) {
             "请输入正确的验证码".toastShort()
-        } else if (!selfVM.state.privateChecked) {
+        } else if (!selfVM.uiState.value.privateChecked) {
             showYszcLog.value = true
         } else {
-            selfVM.goLogin()
+            selfVM.sendIntent(LoginIntent.GoLogin)
         }
     }
 }
@@ -332,7 +333,7 @@ fun CountdownTimerButton(
             .size(78.dp, 26.dp),
         contentPadding = PaddingValues(0.dp),
         onClick = {
-            val phone = vm.state.phone
+            val phone = vm.uiState.value.phone
             if (TextUtils.isEmpty(phone)) {
                 "请输入手机号".toastShort()
                 return@TextButton

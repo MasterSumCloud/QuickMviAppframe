@@ -1,11 +1,14 @@
 package com.demo.quickmviappframe.net
 
 import com.demo.quickmviappframe.entries.LoginResponBean
+import okhttp3.MultipartBody
 import retrofit2.http.Field
 import retrofit2.http.FieldMap
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 import java.util.Objects
 
 interface APIService {
@@ -39,5 +42,13 @@ interface APIService {
     @POST("api/advert/callback")
     suspend fun appTuiGuangRegister(@FieldMap map: java.util.HashMap<String, Any?>): ApiResponse<Objects>
 
-
+    /**
+     * 举报
+     */
+    @Multipart
+    @POST("api/complaint")
+    suspend fun report(
+        @Part("content") content: String, @Part("contact_information") contact_information: String,
+        @Part file: MutableList<MultipartBody.Part>
+    ): ApiResponse<String>
 }

@@ -32,6 +32,7 @@
         <activity android:name=".ui.act.SettingAct" />
         <activity android:name=".ui.act.AboutAct" />
         <activity android:name=".ui.act.WebAct" />
+        <activity android:name=".ui.act.ReportAct" />
     </application>
 
 </manifest>

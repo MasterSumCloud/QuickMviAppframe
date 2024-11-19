@@ -22,7 +22,7 @@ import kotlinx.coroutines.withContext
  * @param isShowDialog 是否显示加载框
  * @param loadingMessage 加载框提示内容
  */
-fun <T> BaseViewModel.request(
+fun <T> BaseViewModel<*, *, *>.request(
     block: suspend () -> BaseResponse<T>,
     success: (T?) -> Unit,
     error: (AppException) -> Unit = {},
@@ -32,12 +32,12 @@ fun <T> BaseViewModel.request(
     //如果需要弹窗 通知Activity/fragment弹窗
     return viewModelScope.launch {
         runCatching {
-            if (isShowDialog) loadingChange.showDialog.postValue(loadingMessage)
+            if (isShowDialog) showLoading()
             //请求体
             block()
         }.onSuccess {
             //网络请求成功 关闭弹窗
-            loadingChange.dismissDialog.postValue(false)
+            disLoading()
             runCatching {
                 //校验请求结果码是否正确，不正确会抛出异常走下面的onFailure
                 executeResponse(it) { t ->
@@ -54,7 +54,7 @@ fun <T> BaseViewModel.request(
             }
         }.onFailure {
             //网络请求异常 关闭弹窗
-            loadingChange.dismissDialog.postValue(false)
+            disLoading()
             //打印错误消息
             it.message?.loge()
             //打印错误栈信息
@@ -93,7 +93,7 @@ suspend fun <T> executeResponse(
  * @param success 成功回调
  * @param error 失败回调 可不给
  */
-fun <T> BaseViewModel.launch(
+fun <T> BaseViewModel<*, *, *>.launch(
     block: () -> T, success: (T) -> Unit, error: (Throwable) -> Unit = {}
 ) {
     viewModelScope.launch {

@@ -317,6 +317,7 @@ private fun itemClick(item: MyActFunListItemBean?, navController: NavHostControl
         "测试" -> {
 //            navController?.navigate(RouteConfig.LOGIN)
             startActivity(LoginAct::class.java)
+//            startActivity(ReportAct::class.java)
 //                startActivity(KeyboardGuideAct::class.java)
 //                startActivity(KeyboardChatDmAct::class.java)
 //                startActivity(KeyboardSettingAct::class.java)

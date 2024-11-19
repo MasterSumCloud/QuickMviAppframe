@@ -126,4 +126,6 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.6.0")
     //autosize
     implementation("com.github.JessYanCoding:AndroidAutoSize:v1.2.1")
+    //compose permission
+    implementation("com.google.accompanist:accompanist-permissions:0.36.0")
 }

@@ -1,31 +1,60 @@
 package com.demo.quickmviappframe.ui.vm
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import com.demo.quickmviappframe.base.BaseViewModel
+import com.demo.quickmviappframe.base.IUiIntent
+import com.demo.quickmviappframe.base.IUiState
+import com.demo.quickmviappframe.ext.request
+import com.demo.quickmviappframe.ext.toastLong
+import com.demo.quickmviappframe.net.apiService
+import com.demo.quickmviappframe.util.GeneralUtil
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
 
-class ReportViewModel : BaseViewModel() {
+class ReportViewModel : BaseViewModel<ReportState, ReportIntent, Any>() {
 
-    var state by mutableStateOf(ReportState())
-        private set
+    override fun initialState(): ReportState {
+        return ReportState.Initial
+    }
 
     fun setReportContent(content: String) {
-        state = state.copy(reportContent = content)
+        uiState.value.content = content
     }
 
     fun setReportContact(contact: String) {
-        state = state.copy(reportContact = contact)
+        uiState.value.contact = contact
     }
 
     fun setReportPhotos(photos: List<String>) {
-        state = state.copy(reportPhotos = photos)
+        uiState.value.photos = photos
+    }
+
+    fun postReport() {
+        "提交的内容：${uiState.value.content}，联系方式：${uiState.value.contact}，图片：${uiState.value.photos}".toastLong()
+        return
+        val imageFiles = mutableListOf<MultipartBody.Part>()
+        uiState.value.photos.forEach {
+            if (it != "add") {
+                val file = File(it)
+                val fileType = "image/" + GeneralUtil.getFileType(it)
+                val asRequestBody = file.asRequestBody(fileType.toMediaType())
+                val part: MultipartBody.Part = MultipartBody.Part.createFormData(
+                    "file[]", GeneralUtil.getFileName(it), asRequestBody
+                )
+                imageFiles.add(part)
+            }
+        }
+        request({ apiService.report(uiState.value.content, uiState.value.contact, imageFiles) }, {}, {})
     }
 
 }
 
-data class ReportState(
-    val reportContent: String = "",
-    val reportContact: String = "",
-    val reportPhotos: List<String> = emptyList()
-)
+sealed class ReportState(var content: String, var contact: String, var photos: List<String>) : IUiState {
+    data object Initial : ReportState("", "", mutableListOf("default"))
+}
+
+sealed class ReportIntent : IUiIntent {
+    data object RequestPermission : ReportIntent()
+}
+

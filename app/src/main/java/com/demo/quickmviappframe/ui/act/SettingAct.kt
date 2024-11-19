@@ -15,6 +15,10 @@ class SettingAct : BaseAct<SettingViewModel>() {
 
     }
 
+    override fun initData() {
+
+    }
+
     @Composable
     override fun initComposeLayout() {
         SettingPage(selfVM)

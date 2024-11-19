@@ -2,6 +2,7 @@ package com.demo.quickmviappframe.util
 
 import android.app.Activity
 import android.content.Context
+import com.demo.quickmviappframe.ext.isNotEmptyOrNull
 import com.umeng.analytics.MobclickAgent
 import java.math.RoundingMode
 import java.text.DecimalFormat
@@ -46,6 +47,30 @@ object GeneralUtil {
         } else {
             val kbs = filsSize / 1024
             return format.format(kbs) + "K"
+        }
+    }
+
+    /**
+     * 获取文件类型
+     */
+    fun getFileType(path: String?): String {
+        if (path == null) {
+            return ""
+        }
+        val lastpoint = path.lastIndexOf(".")
+        return path.substring(lastpoint + 1, path.length).lowercase()
+    }
+
+
+    /**
+     * 获取文件名字
+     */
+    fun getFileName(path: String?): String {
+        if (path.isNotEmptyOrNull()) {
+            val lastpoint = path!!.lastIndexOf("/")
+            return path.substring(lastpoint + 1, path.length)
+        } else {
+            return ""
         }
     }
 }

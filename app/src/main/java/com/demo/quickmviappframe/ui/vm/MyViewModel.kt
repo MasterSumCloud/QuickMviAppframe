@@ -3,16 +3,16 @@ package com.demo.quickmviappframe.ui.vm
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
 import com.demo.quickmviappframe.App
 import com.demo.quickmviappframe.R
-import com.demo.quickmviappframe.base.BaseViewModel
 import com.demo.quickmviappframe.core.Toggles
 import com.demo.quickmviappframe.entries.MyActFunListItemBean
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class MyViewModel @Inject constructor() : BaseViewModel() {
+class MyViewModel @Inject constructor() : ViewModel() {
 
 
     var state by mutableStateOf(UsInfoState())
@@ -35,7 +35,7 @@ class MyViewModel @Inject constructor() : BaseViewModel() {
         if (App.isLogin) {
             val info = App.myActInfo
             if (info != null) {
-                var vipTime:String? = state.vipTime
+                var vipTime: String? = state.vipTime
                 if (App.isVip) {
                     if (info.vip_limit_time?.startsWith("21") == true) {
                         vipTime = "永久会员"
@@ -46,7 +46,7 @@ class MyViewModel @Inject constructor() : BaseViewModel() {
 
                 state = state.copy(
                     userId = info.user_id,
-                    userName =  info.nick_name,
+                    userName = info.nick_name,
                     vipTime = vipTime,
                     isVip = info.vip,
                     headerImageUrl = info.img
@@ -55,7 +55,7 @@ class MyViewModel @Inject constructor() : BaseViewModel() {
         } else {
             state = state.copy(
                 userId = "欢迎使用",
-                userName =  "去登陆/注册",
+                userName = "去登陆/注册",
                 vipTime = "尚未开通会员",
                 isVip = false,
                 headerImageUrl = ""
