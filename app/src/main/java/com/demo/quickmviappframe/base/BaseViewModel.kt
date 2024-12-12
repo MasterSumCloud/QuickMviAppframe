@@ -14,15 +14,15 @@ import kotlinx.coroutines.launch
 
 abstract class BaseViewModel<S, I, E> : ViewModel() {
 
-    // UI 状态的 StateFlow
+    // UI 状态的 StateFlow UI相关
     private val _uiState = MutableStateFlow(initialState())
     val uiState: StateFlow<S> get() = _uiState
 
-    // 单次事件的 SharedFlow
+    // 单次事件的 SharedFlow 单对多
     private val _effect = MutableSharedFlow<E>()
     val effect: SharedFlow<E> get() = _effect
 
-    // 用户意图 (Channel)
+    // 用户意图 (Channel) 单对单
     private val _intent = Channel<I>(Channel.BUFFERED)
     val intent: Flow<I> get() = _intent.receiveAsFlow()
 

@@ -12,6 +12,14 @@ import kotlinx.coroutines.launch
 
 class LoginActVM : BaseViewModel<LoginCodeState, LoginIntent, NoUiEffect>() {
 
+    init {
+        viewModelScope.launch {
+            intent.collect {
+                handleIntent(it)
+            }
+        }
+    }
+
     private fun getPhoneCode() {
         request({ apiService.getPhoneCode(uiState.value.phone) },
             {
@@ -21,15 +29,13 @@ class LoginActVM : BaseViewModel<LoginCodeState, LoginIntent, NoUiEffect>() {
     }
 
 
-    fun handleIntent(intent: LoginIntent) {
+    private fun handleIntent(intent: LoginIntent) {
         viewModelScope.launch {
             when (intent) {
-                is LoginIntent.GetPhoneCode -> {
-                    getPhoneCode()
-                }
-
+                LoginIntent.GetPhoneCode -> getPhoneCode()
                 LoginIntent.GoLogin -> goLogin()
                 LoginIntent.StartAuthLogin -> startAuthLogin()
+                else -> {}
             }
         }
     }
@@ -39,6 +45,7 @@ class LoginActVM : BaseViewModel<LoginCodeState, LoginIntent, NoUiEffect>() {
         params.put("phone", uiState.value.phone)
         params.put("code", uiState.value.code)
         request({ apiService.goLogin(params) }, {
+            "登录成功".toastShort()
 //            GeneralUtil.loginSuccess(it, "phone_auth")
 //            loginState.set(App.isLogin)
 //            upgd(3, it?.user_id, null)
@@ -47,7 +54,6 @@ class LoginActVM : BaseViewModel<LoginCodeState, LoginIntent, NoUiEffect>() {
 
 
     private fun startAuthLogin() {
-//        loadingChange.showDialog.value = "show"
         App.app.goLogin()
     }
 

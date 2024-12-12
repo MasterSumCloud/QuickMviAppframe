@@ -12,7 +12,6 @@ class LoginAct : BaseAct<LoginActVM>() {
     }
 
     override fun initListener() {
-
     }
 
     override fun initData() {

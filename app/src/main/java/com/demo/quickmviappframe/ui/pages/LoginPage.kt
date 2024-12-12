@@ -264,6 +264,8 @@ fun LoginPage(vm: LoginActVM) {
             }, {
                 showYszcLog.value = false
                 agreementPolicy.value = true
+                vm.uiState.value.privateChecked = true
+                vm.sendIntent(LoginIntent.GoLogin)
             })
         }
     }
@@ -299,6 +301,7 @@ private fun juadgeLoginInfo(type: Int, selfVM: LoginActVM, ctx: Context, showYsz
             showYszcLog.value = true
         } else {
             selfVM.sendIntent(LoginIntent.GoLogin)
+//            selfVM.handleIntent(LoginIntent.GoLogin)
         }
     }
 }

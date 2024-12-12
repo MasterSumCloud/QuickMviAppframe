@@ -2,8 +2,6 @@ package com.demo.quickmviappframe.ui.router
 
 /**
  * @Description ：   页面路由
- *
- * @constructor Create empty Route config
  */
 object RouteConfig {
 

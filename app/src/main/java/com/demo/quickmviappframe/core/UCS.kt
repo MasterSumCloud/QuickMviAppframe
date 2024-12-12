@@ -1,8 +1,7 @@
 package com.demo.quickmviappframe.core
 
 object UCS {
-    var BASE_URL =
-        if (Toggles.isRelease) "" else if (Toggles.isPreRelease) "" else ""
+    var BASE_URL = if (Toggles.isRelease) "" else if (Toggles.isPreRelease) "" else ""
 
     const val TIME_CLICK_INTERVAL = 1500 //default click dis is 1500
     const val SIZE_OF_M = 1024 * 1024
